@@ -1,0 +1,74 @@
+<div class="detail-container">
+
+  <!-- Prikazuje se ako parking sa tim ID-om ne postoji -->
+  @if (!parking) {
+    <div class="not-found">
+      <p>Parking not found.</p>
+      <a routerLink="/list">← Back to list</a>
+    </div>
+  }
+
+  <!-- Prikazuje se samo ako parking postoji -->
+  @if (parking) {
+
+    <!-- Gornji bar: back dugme i status badge -->
+    <div class="top-bar">
+      <a routerLink="/list" class="back-btn">← Back</a>
+      <!-- Badge boja se mijenja dinamički: badge-available, badge-limited, badge-full -->
+      <span class="badge badge-{{ parking.status }}">
+        {{ getStatusLabel(parking.status) }}
+      </span>
+    </div>
+
+    <!-- Naziv i adresa parkinga -->
+    <h1>{{ parking.name }}</h1>
+    <p class="address">{{ parking.address }}</p>
+
+    <!-- Dvije stat kartice: slobodna mjesta i cijena -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-label">Available spots</div>
+        <!-- Broj slobodnih mjesta -->
+        <div class="stat-value">{{ parking.availableSpots }}</div>
+        <div class="stat-sub">of {{ parking.totalCapacity }} total</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Price</div>
+        <!-- Cijena formatirana na 2 decimale pomoću pipe-a -->
+        <div class="stat-value">{{ parking.pricePerHour | number:'1.2-2' }}</div>
+        <div class="stat-sub">KM / hour</div>
+      </div>
+    </div>
+
+    <!-- Tabela sa dodatnim info: zona, radno vrijeme, adresa -->
+    <div class="info-table">
+      <div class="info-row">
+        <span class="info-label">Zone</span>
+        <span>{{ parking.zone }}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Working hours</span>
+        <span>{{ parking.workingHours }}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Address</span>
+        <span>{{ parking.address }}</span>
+      </div>
+    </div>
+
+    <!-- Placeholder za mapu – prikazuje koordinate dok nema Google Maps integracije -->
+    <div class="map-placeholder">
+      <p> {{ parking.latitude }}, {{ parking.longitude }}</p>
+    </div>
+
+    <!-- Dugme koje otvara Google Maps u novom tabu sa lokacijom parkinga -->
+
+      <a [href]="parking.googleMapsUrl"
+      target="_blank"
+      class="directions-btn"
+      >
+      Get directions →
+    </a>
+  }
+
+</div>
