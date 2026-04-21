@@ -1,19 +1,42 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
-    path:'list',
+    path: 'list',
     loadComponent: () =>
       import('./components/parking-list/parking-list').then(
         m => m.ParkingListComponent
       )
   },
   {
-    path:'parking/:id', //dinamicki parametar
+    path: 'parking/:id', //dinamički parametar
     loadComponent: () =>
       import('./components/parking-detail/parking-detail').then(
         m => m.ParkingDetailComponent
       )
+  },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./components/login/login').then(
+        m => m.LoginComponent
+      )
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./components/register/register').then(
+        m => m.RegisterComponent
+      )
+  },
+  {
+    path: 'favourites',
+    loadComponent: () =>
+      import('./components/favourites/favourites').then(
+        m => m.FavouritesComponent
+      ),
+    canActivate: [authGuard]
   },
   {
     path: '',
@@ -21,4 +44,3 @@ export const routes: Routes = [
     pathMatch: 'full'
   }
 ];
-
