@@ -1,54 +1,51 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map, catchError, of } from 'rxjs';
 import { User } from '../models/user';
 
-interface RegisteredUser {
-  id: string;
+interface BackendUser {
+  id: number | string;
   fullName: string;
   email: string;
   password: string;
-  token: string;
+}
+
+interface AuthResult {
+  success: boolean;
+  error?: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly storageKey: string = 'parksmart_user';
+  private readonly apiUrl = 'http://localhost:8080/api/users';
+  private readonly storageKey = 'parksmart_user';
 
-  private registeredUsers: RegisteredUser[] = [
-    {
-      id: 'u01',
-      fullName: 'Test User',
-      email: 'test@test.com',
-      password: 'password123',
-      token: 'fake-token-u01'
-    }
-  ];
+  constructor(private http: HttpClient) {}
 
-  login(email: string, password: string): boolean {
-    const found = this.registeredUsers.find(
-      u => u.email === email && u.password === password
+  register(fullName: string, email: string, password: string): Observable<AuthResult> {
+    return this.http.post<BackendUser>(this.apiUrl, { fullName, email, password }).pipe(
+      map(backendUser => {
+        const user: User = { id: String(backendUser.id), fullName: backendUser.fullName, email: backendUser.email };
+        localStorage.setItem(this.storageKey, JSON.stringify(user));
+        return { success: true };
+      }),
+      catchError(() => of({ success: false, error: 'Registration failed. Please try again.' }))
     );
-    if (!found) return false;
-    const user: User = { id: found.id, fullName: found.fullName, email: found.email, token: found.token };
-    localStorage.setItem(this.storageKey, JSON.stringify(user));
-    return true;
   }
 
-  register(fullName: string, email: string, password: string): boolean {
-    const exists = this.registeredUsers.some(u => u.email === email);
-    if (exists) return false;
-    const newUser: RegisteredUser = {
-      id: 'u' + Date.now(),
-      fullName,
-      email,
-      password,
-      token: 'fake-token-' + Date.now()
-    };
-    this.registeredUsers.push(newUser);
-    const user: User = { id: newUser.id, fullName: newUser.fullName, email: newUser.email, token: newUser.token };
-    localStorage.setItem(this.storageKey, JSON.stringify(user));
-    return true;
+  login(email: string, password: string): Observable<AuthResult> {
+    return this.http.get<BackendUser[]>(this.apiUrl).pipe(
+      map(users => {
+        const found = users.find(u => u.email === email && u.password === password);
+        if (!found) return { success: false };
+        const user: User = { id: String(found.id), fullName: found.fullName, email: found.email };
+        localStorage.setItem(this.storageKey, JSON.stringify(user));
+        return { success: true };
+      }),
+      catchError(() => of({ success: false, error: 'Login failed. Please try again.' }))
+    );
   }
 
   logout(): void {
