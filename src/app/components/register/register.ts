@@ -40,11 +40,12 @@ export class RegisterComponent {
       email: string;
       password: string;
     };
-    const success = this.authService.register(fullName, email, password);
-    if (success) {
-      this.router.navigate(['/list']);
-    } else {
-      this.errorMessage = 'An account with this email already exists.';
-    }
+    this.authService.register(fullName, email, password).subscribe(result => {
+      if (result.success) {
+        this.router.navigate(['/list']);
+      } else {
+        this.errorMessage = result.error ?? 'Registration failed.';
+      }
+    });
   }
 }

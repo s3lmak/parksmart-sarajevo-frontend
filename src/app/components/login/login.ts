@@ -28,11 +28,12 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.loginForm.invalid) return;
     const { email, password } = this.loginForm.value as { email: string; password: string };
-    const success = this.authService.login(email, password);
-    if (success) {
-      this.router.navigate(['/list']);
-    } else {
-      this.errorMessage = 'Invalid email or password.';
-    }
+    this.authService.login(email, password).subscribe(result => {
+      if (result.success) {
+        this.router.navigate(['/list']);
+      } else {
+        this.errorMessage = 'Invalid credentials.';
+      }
+    });
   }
 }
