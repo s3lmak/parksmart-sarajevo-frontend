@@ -1,8 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { Parking } from '../../models/parking';
 import { FavouritesService } from '../../services/favourites';
+import { ParkingService } from '../../services/parking';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-favourites',
@@ -10,28 +13,37 @@ import { FavouritesService } from '../../services/favourites';
   templateUrl: './favourites.html',
   styleUrl: './favourites.css',
 })
-export class FavouritesComponent implements OnInit, OnDestroy {
+export class FavouritesComponent implements OnInit {
   favourites: Parking[] = [];
-  private refreshInterval: ReturnType<typeof setInterval> | undefined;
+  private userId: string = '';
 
-  constructor(private favouritesService: FavouritesService) {}
+  constructor(
+    private favouritesService: FavouritesService,
+    private parkingService: ParkingService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    this.favourites = this.favouritesService.getFavourites();
-    this.refreshInterval = setInterval(() => {
-      this.favourites = this.favouritesService.getFavourites();
-    }, 60000);
+    const user = this.authService.getCurrentUser();
+    if (!user) return;
+    this.userId = user.id;
+    this.loadFavourites();
   }
 
-  ngOnDestroy(): void {
-    if (this.refreshInterval) {
-      clearInterval(this.refreshInterval);
-    }
+  loadFavourites(): void {
+    forkJoin({
+      favs: this.favouritesService.getFavourites(this.userId),
+      parkings: this.parkingService.getParkings()
+    }).subscribe(({ favs, parkings }) => {
+      const favouriteIds = new Set(favs.map(f => f.parkingId));
+      this.favourites = parkings.filter(p => favouriteIds.has(p.id));
+    });
   }
 
   remove(parkingId: string): void {
-    this.favouritesService.removeFavourite(parkingId);
-    this.favourites = this.favouritesService.getFavourites();
+    this.favouritesService.removeFavourite(this.userId, parkingId).subscribe(() => {
+      this.favourites = this.favourites.filter(p => p.id !== parkingId);
+    });
   }
 
   getStatusLabel(status: string): string {

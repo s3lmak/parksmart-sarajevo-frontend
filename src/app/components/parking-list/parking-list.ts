@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Parking } from '../../models/parking';
 import { ParkingService } from '../../services/parking';
+import { FavouritesService } from '../../services/favourites';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-parking-list',
@@ -16,16 +18,23 @@ export class ParkingListComponent implements OnInit {
 
   parkings: Parking[] = [];
   zones: string[] = [];
+  favouriteIds: Set<string> = new Set();
 
   selectedZone: string = '';
   selectedStatus: string = '';
   maxPrice: number | undefined = undefined;
 
-  constructor(private parkingService: ParkingService) {}
+  constructor(
+    private parkingService: ParkingService,
+    private favouritesService: FavouritesService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadParkings();
     this.loadZones();
+    this.loadFavouriteIds();
   }
 
   loadParkings(): void {
@@ -36,6 +45,14 @@ export class ParkingListComponent implements OnInit {
 
   loadZones(): void {
     this.zones = ['Zone 1', 'Zone 2', 'Zone 3'];
+  }
+
+  loadFavouriteIds(): void {
+    const user = this.authService.getCurrentUser();
+    if (!user) return;
+    this.favouritesService.getFavourites(user.id).subscribe(favs => {
+      this.favouriteIds = new Set(favs.map(f => f.parkingId));
+    });
   }
 
   applyFilters(): void {
@@ -62,5 +79,28 @@ export class ParkingListComponent implements OnInit {
       full: 'Full'
     };
     return labels[status] || status;
+  }
+
+  isFavourite(parkingId: string): boolean {
+    return this.favouriteIds.has(parkingId);
+  }
+
+  toggleFavourite(parking: Parking, event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    const user = this.authService.getCurrentUser();
+    if (!user) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    if (this.favouriteIds.has(parking.id)) {
+      this.favouritesService.removeFavourite(user.id, parking.id).subscribe(() => {
+        this.favouriteIds = new Set([...this.favouriteIds].filter(id => id !== parking.id));
+      });
+    } else {
+      this.favouritesService.addFavourite(user.id, parking.id).subscribe(() => {
+        this.favouriteIds = new Set([...this.favouriteIds, parking.id]);
+      });
+    }
   }
 }

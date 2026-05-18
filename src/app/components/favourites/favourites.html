@@ -25,7 +25,7 @@
             {{ getStatusLabel(parking.status) }}
           </span>
           <p class="spots">{{ parking.availableSpots }} / {{ parking.totalCapacity }} free</p>
-          <button class="remove-btn" (click)="remove(parking.id)">Remove</button>
+          <button class="remove-btn" (click)="remove(parking.id)" aria-label="Remove from favourites">✕</button>
         </div>
       </div>
     }

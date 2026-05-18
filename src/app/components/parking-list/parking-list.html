@@ -1,30 +1,23 @@
 <div class="parking-list-container">
 
-  <!-- Naslov i broj rezultata -->
   <div class="header">
     <h1>Parking List</h1>
-    <!-- parkings.length se automatski ažurira kad se primijene filteri -->
     <p class="subtitle">{{ parkings.length }} results</p>
   </div>
 
   <!-- Filter panel -->
   <div class="filters">
 
-    <!-- Filter po zoni – opcije se generišu dinamički iz servisa -->
     <div class="filter-group">
       <label>Zone</label>
-      <!-- [(ngModel)] = two-way binding: promjena u selectu mijenja selectedZone i obrnuto -->
-      <!-- (change) = poziva applyFilters() svaki put kad korisnik promijeni zonu -->
       <select [(ngModel)]="selectedZone" (change)="applyFilters()">
         <option value="">All zones</option>
-        <!-- @for petlja kroz sve zone iz servisa -->
         @for (zone of zones; track zone) {
           <option [value]="zone">{{ zone }}</option>
         }
       </select>
     </div>
 
-    <!-- Filter po statusu -->
     <div class="filter-group">
       <label>Status</label>
       <select [(ngModel)]="selectedStatus" (change)="applyFilters()">
@@ -35,10 +28,8 @@
       </select>
     </div>
 
-    <!-- Filter po maksimalnoj cijeni -->
     <div class="filter-group">
       <label>Max price (KM/h)</label>
-      <!-- (input) = poziva applyFilters() svaki put kad korisnik upiše broj -->
       <input
         type="number"
         [(ngModel)]="maxPrice"
@@ -49,12 +40,10 @@
       />
     </div>
 
-    <!-- Dugme za reset svih filtera -->
     <button class="reset-btn" (click)="resetFilters()">Reset filters</button>
 
   </div>
 
-  <!-- Empty state: prikazuje se samo kad nema rezultata -->
   @if (parkings.length === 0) {
     <div class="empty-state">
       <p>No parking lots match the active filters.</p>
@@ -62,28 +51,26 @@
     </div>
   }
 
-  <!-- Lista parking kartica -->
   <div class="parking-cards">
-    <!-- @for petlja kroz sve parkinge; track parking.id = Angular prati svaki element po ID-u -->
     @for (parking of parkings; track parking.id) {
-      <!-- Klik na karticu vodi na detail stranicu /parking/:id -->
-
-        <a [routerLink]="['/parking', parking.id]"
-        class="parking-card"
-        >
-      <div class="card-left">
-        <h2>{{ parking.name }}</h2>
-        <p class="address">{{ parking.address }}</p>
-        <!-- | number:'1.2-2' = pipe koji formatira broj na minimum 1 i maksimum 2 decimale -->
-        <p class="zone">{{ parking.zone }} · {{ parking.pricePerHour | number:'1.2-2' }} KM/h</p>
-      </div>
-      <div class="card-right">
-        <!-- Dinamički CSS class: badge-available, badge-limited ili badge-full -->
-        <span class="badge badge-{{ parking.status }}">
+      <a [routerLink]="['/parking', parking.id]" class="parking-card">
+        <div class="card-left">
+          <h2>{{ parking.name }}</h2>
+          <p class="address">{{ parking.address }}</p>
+          <p class="zone">{{ parking.zone }} · {{ parking.pricePerHour | number:'1.2-2' }} KM/h</p>
+        </div>
+        <div class="card-right">
+          <button
+            class="fav-btn"
+            [class.is-favourite]="isFavourite(parking.id)"
+            (click)="toggleFavourite(parking, $event)"
+            [attr.aria-label]="isFavourite(parking.id) ? 'Remove from favourites' : 'Add to favourites'"
+          >{{ isFavourite(parking.id) ? '♥' : '♡' }}</button>
+          <span class="badge badge-{{ parking.status }}">
             {{ getStatusLabel(parking.status) }}
           </span>
-        <p class="spots">{{ parking.availableSpots }} / {{ parking.totalCapacity }} free</p>
-      </div>
+          <p class="spots">{{ parking.availableSpots }} / {{ parking.totalCapacity }} free</p>
+        </div>
       </a>
     }
   </div>
