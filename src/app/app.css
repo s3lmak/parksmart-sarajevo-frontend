@@ -1,0 +1,25 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background: #1a2a4a;
+  color: white;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  margin-left: 16px;
+}
+
+.navbar a:first-child {
+  font-weight: 600;
+  font-size: 16px;
+  margin-left: 0;
+}
+
+.nav-links a:hover {
+  color: #4ecca3;
+}
