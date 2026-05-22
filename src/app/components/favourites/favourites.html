@@ -1,33 +1,46 @@
 <div class="favourites-container">
 
-  <div class="header">
+  <div class="list-header">
     <h1>Saved Parkings</h1>
-    <p class="subtitle">{{ favourites.length }} saved</p>
+    <span class="results-count">{{ favourites.length }} saved</span>
   </div>
 
   @if (favourites.length === 0) {
     <div class="empty-state">
+      <mat-icon>favorite_border</mat-icon>
       <p>No saved parkings yet.</p>
-      <a routerLink="/list">Browse parking lots</a>
+      <a mat-stroked-button routerLink="/list">Browse parking lots</a>
     </div>
   }
 
   <div class="parking-cards">
     @for (parking of favourites; track parking.id) {
-      <div class="parking-card">
-        <div class="card-left">
-          <h2>{{ parking.name }}</h2>
-          <p class="address">{{ parking.address }}</p>
-          <p class="zone">{{ parking.zone }} · {{ parking.pricePerHour | number:'1.2-2' }} KM/h</p>
-        </div>
-        <div class="card-right">
-          <span class="badge badge-{{ parking.status }}">
-            {{ getStatusLabel(parking.status) }}
-          </span>
-          <p class="spots">{{ parking.availableSpots }} / {{ parking.totalCapacity }} free</p>
-          <button class="remove-btn" (click)="remove(parking.id)" aria-label="Remove from favourites">✕</button>
-        </div>
-      </div>
+      <mat-card class="parking-card">
+        <mat-card-content>
+          <a [routerLink]="['/parking', parking.id]" class="card-link">
+            <div class="card-main">
+              <div class="card-info">
+                <h2>{{ parking.name }}</h2>
+                <p class="address">
+                  <mat-icon>location_on</mat-icon>
+                  {{ parking.address }}
+                </p>
+                <p class="price">{{ parking.pricePerHour | number:'1.2-2' }} KM/h</p>
+              </div>
+              <div class="card-status">
+                <span class="badge badge-{{ parking.status }}">
+                  {{ getStatusLabel(parking.status) }}
+                </span>
+                <p class="spots">{{ parking.availableSpots }} / {{ parking.totalCapacity }} free</p>
+              </div>
+            </div>
+          </a>
+          <button mat-stroked-button color="warn" class="remove-btn" (click)="remove(parking.id)" aria-label="Remove from favourites">
+            <mat-icon>close</mat-icon>
+            Remove
+          </button>
+        </mat-card-content>
+      </mat-card>
     }
   </div>
 

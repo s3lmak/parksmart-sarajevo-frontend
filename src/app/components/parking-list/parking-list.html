@@ -1,77 +1,77 @@
 <div class="parking-list-container">
 
-  <div class="header">
+  <div class="list-header">
     <h1>Parking List</h1>
-    <p class="subtitle">{{ parkings.length }} results</p>
+    <span class="results-count">{{parkings.length}} results</span>
   </div>
 
-  <!-- Filter panel -->
   <div class="filters">
-
-    <div class="filter-group">
-      <label>Zone</label>
-      <select [(ngModel)]="selectedZone" (change)="applyFilters()">
-        <option value="">All zones</option>
+    <mat-form-field appearance="outline" class="zone-filter">
+      <mat-label>Neighbourhood</mat-label>
+      <mat-select [(ngModel)]="selectedZone" (ngModelChange)="applyFilters()">
+        <mat-option value="">All</mat-option>
         @for (zone of zones; track zone) {
-          <option [value]="zone">{{ zone }}</option>
+          <mat-option [value]="zone">{{ zone }}</mat-option>
         }
-      </select>
-    </div>
+      </mat-select>
+    </mat-form-field>
 
-    <div class="filter-group">
-      <label>Status</label>
-      <select [(ngModel)]="selectedStatus" (change)="applyFilters()">
-        <option value="">All</option>
-        <option value="available">Available</option>
-        <option value="limited">Limited</option>
-        <option value="full">Full</option>
-      </select>
-    </div>
+    <mat-chip-listbox
+      class="filter-chips"
+      [(ngModel)]="selectedStatus"
+      (ngModelChange)="applyFilters()">
+      <mat-chip-option value="available">Available</mat-chip-option>
+      <mat-chip-option value="limited">Almost full</mat-chip-option>
+      <mat-chip-option value="full">Full</mat-chip-option>
+    </mat-chip-listbox>
 
-    <div class="filter-group">
-      <label>Max price (KM/h)</label>
-      <input
-        type="number"
-        [(ngModel)]="maxPrice"
-        (input)="applyFilters()"
-        placeholder="e.g. 2.00"
-        min="0"
-        step="0.50"
-      />
-    </div>
-
-    <button class="reset-btn" (click)="resetFilters()">Reset filters</button>
+    <button mat-stroked-button (click)="resetFilters()">
+      <mat-icon>clear</mat-icon>
+      Reset
+    </button>
 
   </div>
 
-  @if (parkings.length === 0) {
+  @if(parkings.length === 0){
     <div class="empty-state">
+      <mat-icon>local_parking</mat-icon>
       <p>No parking lots match the active filters.</p>
-      <button (click)="resetFilters()">Clear filters</button>
+      <button mat-stroked-button (click)="resetFilters()">Clear filters</button>
     </div>
   }
 
   <div class="parking-cards">
     @for (parking of parkings; track parking.id) {
-      <a [routerLink]="['/parking', parking.id]" class="parking-card">
-        <div class="card-left">
-          <h2>{{ parking.name }}</h2>
-          <p class="address">{{ parking.address }}</p>
-          <p class="zone">{{ parking.zone }} · {{ parking.pricePerHour | number:'1.2-2' }} KM/h</p>
-        </div>
-        <div class="card-right">
+      <mat-card class="parking-card">
+        <mat-card-content>
+          <a [routerLink]="['/parking', parking.id]" class="card-link">
+            <div class="card-main">
+              <div class="card-info">
+                <h2>{{ parking.name }}</h2>
+                <p class="address">
+                  <mat-icon>location_on</mat-icon>
+                  {{ parking.address }}
+                </p>
+                <p class="price">{{ parking.pricePerHour | number:'1.2-2' }} KM/h</p>
+              </div>
+              <div class="card-status">
+                <span class="badge badge-{{ parking.status }}">
+                  {{ getStatusLabel(parking.status) }}
+                </span>
+                <p class="spots">{{ parking.availableSpots }} / {{ parking.totalCapacity }} free</p>
+              </div>
+            </div>
+          </a>
           <button
+            mat-icon-button
             class="fav-btn"
             [class.is-favourite]="isFavourite(parking.id)"
             (click)="toggleFavourite(parking, $event)"
-            [attr.aria-label]="isFavourite(parking.id) ? 'Remove from favourites' : 'Add to favourites'"
-          >{{ isFavourite(parking.id) ? '♥' : '♡' }}</button>
-          <span class="badge badge-{{ parking.status }}">
-            {{ getStatusLabel(parking.status) }}
-          </span>
-          <p class="spots">{{ parking.availableSpots }} / {{ parking.totalCapacity }} free</p>
-        </div>
-      </a>
+            [attr.aria-label]="isFavourite(parking.id) ? 'Remove from favourites' : 'Add to favourites'">
+            <mat-icon>{{ isFavourite(parking.id) ? 'favorite' : 'favorite_border' }}</mat-icon>
+          </button>
+        </mat-card-content>
+      </mat-card>
     }
   </div>
 

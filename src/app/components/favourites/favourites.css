@@ -1,92 +1,95 @@
 .favourites-container {
-  max-width: 800px;
+  padding: 16px;
+  max-width: 600px;
   margin: 0 auto;
-  padding: 24px 16px;
 }
 
-.header {
-  margin-bottom: 24px;
+.list-header {
+  margin-bottom: 16px;
 }
 
-.header h1 {
-  font-size: 24px;
+.list-header h1 {
+  font-size: 22px;
   font-weight: 600;
   margin: 0 0 4px;
 }
 
-.subtitle {
-  font-size: 14px;
+.results-count {
+  font-size: 13px;
   color: #666;
-  margin: 0;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 48px 0;
-  color: #666;
-}
-
-.empty-state a {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 8px 20px;
-  background: #1a73e8;
-  color: white;
-  border-radius: 6px;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.empty-state a:hover {
-  background: #1557b0;
 }
 
 .parking-cards {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .parking-card {
+  border-radius: 12px !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08) !important;
+}
+
+.parking-card mat-card-content {
+  padding: 8px 14px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card-main {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  background: white;
+  align-items: flex-start;
+  gap: 12px;
 }
 
-.card-left h2 {
-  font-size: 15px;
+.card-info h2 {
+  font-size: 17px;
   font-weight: 600;
-  margin: 0 0 4px;
+  margin: 0 0 2px;
 }
 
-.card-left .address {
+.address {
+  display: flex;
+  align-items: center;
+  gap: 2px;
   font-size: 13px;
   color: #666;
   margin: 0 0 2px;
 }
 
-.card-left .zone {
-  font-size: 13px;
+.address mat-icon {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+}
+
+.price {
+  font-size: 12px;
   color: #888;
   margin: 0;
 }
 
-.card-right {
+.card-status {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 6px;
+  gap: 4px;
+  flex-shrink: 0;
 }
 
 .badge {
-  padding: 4px 10px;
+  padding: 3px 10px;
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .badge-available {
@@ -105,22 +108,43 @@
 }
 
 .spots {
-  font-size: 12px;
-  color: #666;
+  font-size: 11px;
+  color: #888;
   margin: 0;
 }
 
 .remove-btn {
-  padding: 6px 14px;
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  font-size: 13px;
-  color: #c62828;
-  cursor: pointer;
+  align-self: flex-end;
+  color: #e53935;
 }
 
-.remove-btn:hover {
-  background: #fce8e6;
-  border-color: #c62828;
+.empty-state {
+  text-align: center;
+  padding: 48px 0;
+  color: #999;
+}
+
+.empty-state mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 480px) {
+  .favourites-container {
+    padding: 12px;
+  }
+
+  .card-info h2 {
+    font-size: 17px;
+  }
+}
+
+.card-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding-top: 4px;
 }

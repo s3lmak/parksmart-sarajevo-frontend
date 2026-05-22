@@ -1,16 +1,33 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { DecimalPipe } from '@angular/common';
 import { Parking } from '../../models/parking';
 import { ParkingService } from '../../services/parking';
 import { FavouritesService } from '../../services/favourites';
 import { AuthService } from '../../services/auth';
+import { MatChipListbox, MatChipOption } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-parking-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [
+    RouterModule,
+    FormsModule,
+    DecimalPipe,
+    MatChipListbox,
+    MatChipOption,
+    MatIconModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonModule
+  ],
   templateUrl: './parking-list.html',
   styleUrl: './parking-list.css'
 })
@@ -102,5 +119,14 @@ export class ParkingListComponent implements OnInit {
         this.favouriteIds = new Set([...this.favouriteIds, parking.id]);
       });
     }
+  }
+  selectZone(zone: string): void {
+    this.selectedZone = this.selectedZone === zone ? '' : zone;
+    this.applyFilters();
+  }
+
+  selectStatus(status: string): void {
+    this.selectedStatus = this.selectedStatus === status ? '' : status;
+    this.applyFilters();
   }
 }

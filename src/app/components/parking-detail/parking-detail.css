@@ -40,11 +40,6 @@ h1 {
   margin: 0 0 4px;
 }
 
-.address {
-  font-size: 14px;
-  color: #666;
-  margin: 0 0 24px;
-}
 
 .stats {
   display: grid;
@@ -95,30 +90,22 @@ h1 {
   border-bottom: none;
 }
 
-.info-label {
-  color: #666;
-}
-
-.map-placeholder {
-  background: #f5f5f5;
-  border: 1px solid #e0e0e0;
+.map-container {
   border-radius: 10px;
-  height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
   margin-bottom: 24px;
-  color: #666;
-  font-size: 14px;
+  height: 200px;
 }
 
 .directions-btn {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   width: 100%;
   padding: 14px;
   background: #1a73e8;
   color: white;
-  text-align: center;
   text-decoration: none;
   border-radius: 10px;
   font-size: 15px;
@@ -150,4 +137,37 @@ h1 {
 .badge-full {
   background: #fce8e6;
   color: #c62828;
+}
+
+/* Popravi adresu da ikonica bude poravnata sa tekstom */
+.address {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 24px;
+}
+
+.address mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.info-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #666;
+}
+
+.info-label mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.fav-btn.is-favourite mat-icon {
+  color: #e53935;
 }

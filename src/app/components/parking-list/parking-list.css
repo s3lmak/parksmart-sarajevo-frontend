@@ -1,139 +1,113 @@
 .parking-list-container {
-  max-width: 800px;
+  padding: 16px;
+  max-width: 600px;
   margin: 0 auto;
-  padding: 24px 16px;
 }
 
-.header {
-  margin-bottom: 24px;
+.list-header {
+  margin-bottom: 16px;
 }
 
-.header h1 {
-  font-size: 24px;
+.list-header h1 {
+  font-size: 22px;
   font-weight: 600;
   margin: 0 0 4px;
 }
 
-.subtitle {
-  font-size: 14px;
+.results-count {
+  font-size: 13px;
   color: #666;
-  margin: 0;
 }
 
 .filters {
   display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  background: #f5f5f5;
-  padding: 16px;
-  border-radius: 10px;
-  margin-bottom: 24px;
-}
-
-.filter-group {
-  display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
-.filter-group label {
-  font-size: 12px;
-  font-weight: 500;
-  color: #444;
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-.filter-group select,
-.filter-group input {
-  padding: 8px 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 14px;
-  background: white;
-}
-
-.reset-btn {
-  padding: 8px 16px;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.reset-btn:hover {
-  background: #f0f0f0;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 48px 0;
-  color: #666;
-}
-
-.empty-state button {
-  margin-top: 12px;
-  padding: 8px 20px;
-  background: #1a73e8;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
 
 .parking-cards {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .parking-card {
+  border-radius: 12px !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08) !important;
+}
+
+.parking-card mat-card-content {
+  padding: 6px 14px 2px !important;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
+  flex-direction: column;
+  gap: 4px;
+}
+.fav-btn {
+  margin-top: -4px;
+  margin-bottom: -8px;
+}
+
+.card-link {
   text-decoration: none;
   color: inherit;
-  background: white;
-  transition: box-shadow 0.2s;
 }
 
-.parking-card:hover {
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+.card-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
 }
 
-.card-left h2 {
-  font-size: 15px;
+.card-info h2 {
+  font-size: 17px;
   font-weight: 600;
-  margin: 0 0 4px;
+  margin: 0 0 2px;
 }
 
-.card-left .address {
+.address {
+  display: flex;
+  align-items: center;
+  gap: 2px;
   font-size: 13px;
   color: #666;
   margin: 0 0 2px;
 }
 
-.card-left .zone {
-  font-size: 13px;
+.address mat-icon {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+}
+
+.zone {
+  font-size: 12px;
   color: #888;
   margin: 0;
 }
 
-.card-right {
+.card-status {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 6px;
+  gap: 4px;
+  flex-shrink: 0;
 }
 
 .badge {
-  padding: 4px 10px;
+  padding: 3px 10px;
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .badge-available {
@@ -152,26 +126,52 @@
 }
 
 .spots {
-  font-size: 12px;
-  color: #666;
+  font-size: 11px;
+  color: #888;
   margin: 0;
 }
 
 .fav-btn {
-  background: none;
-  border: none;
-  font-size: 20px;
-  line-height: 1;
-  padding: 0;
-  cursor: pointer;
-  color: #ccc;
-  transition: color 0.15s;
+  align-self: flex-end;
 }
 
-.fav-btn:hover {
+.fav-btn.is-favourite mat-icon {
   color: #e53935;
 }
 
-.fav-btn.is-favourite {
-  color: #e53935;
+
+.empty-state {
+  text-align: center;
+  padding: 48px 0;
+  color: #999;
+}
+
+.empty-state mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+}
+
+
+button[mat-stroked-button] {
+  align-self: flex-start;
+}
+
+@media (max-width: 480px) {
+  .parking-list-container {
+    padding: 12px;
+  }
+
+  .card-info h2 {
+    font-size: 17px;
+  }
+}
+
+.card-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding-top: 4px;
 }

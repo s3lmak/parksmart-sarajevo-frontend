@@ -1,15 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { Parking } from '../../models/parking';
 import { FavouritesService } from '../../services/favourites';
 import { ParkingService } from '../../services/parking';
 import { AuthService } from '../../services/auth';
-
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-favourites',
-  imports: [CommonModule, RouterModule],
+  imports: [
+  RouterModule,
+  DecimalPipe,
+  MatCardModule,
+  MatIconModule,
+  MatButtonModule
+],
   templateUrl: './favourites.html',
   styleUrl: './favourites.css',
 })

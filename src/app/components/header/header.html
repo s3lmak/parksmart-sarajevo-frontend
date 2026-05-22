@@ -1,0 +1,39 @@
+<mat-toolbar>
+  <a routerLink="/list" class="logo">
+    <mat-icon>local_parking</mat-icon>
+    <span>ParkSmart</span>
+  </a>
+
+  <span class="spacer"></span>
+
+  <nav class="nav-links">
+    <a routerLink="/list" routerLinkActive="active-link" class="nav-item">
+      <mat-icon>list</mat-icon>
+      <span class="nav-label">Parking</span>
+    </a>
+    <a routerLink="/map" routerLinkActive="active-link" class="nav-item">
+      <mat-icon>map</mat-icon>
+      <span class="nav-label">Map</span>
+    </a>
+
+    @if (isLoggedIn()) {
+      <a routerLink="/favourites" routerLinkActive="active-link" class="nav-item">
+        <mat-icon>favorite</mat-icon>
+        <span class="nav-label">Favourites</span>
+      </a>
+      <button (click)="logout()" class="nav-item">
+        <mat-icon>logout</mat-icon>
+        <span class="nav-label">Logout</span>
+      </button>
+    } @else {
+      <a routerLink="/login" routerLinkActive="active-link" class="nav-item">
+        <mat-icon>login</mat-icon>
+        <span class="nav-label">Login</span>
+      </a>
+      <a routerLink="/register" routerLinkActive="active-link" class="nav-item">
+        <mat-icon>person_add</mat-icon>
+        <span class="nav-label">Register</span>
+      </a>
+    }
+  </nav>
+</mat-toolbar>

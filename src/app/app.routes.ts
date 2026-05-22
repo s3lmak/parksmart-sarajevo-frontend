@@ -10,6 +10,11 @@ export const routes: Routes = [
       )
   },
   {
+    path: 'map',
+    loadComponent: () =>
+      import('./components/map/map').then(m=>m.MapComponent)
+  },
+  {
     path: 'parking/:id', //dinamički parametar
     loadComponent: () =>
       import('./components/parking-detail/parking-detail').then(

@@ -1,73 +1,88 @@
 <div class="detail-container">
 
-  <!-- Prikazuje se ako parking sa tim ID-om ne postoji -->
   @if (!parking) {
     <div class="not-found">
+      <mat-icon>local_parking</mat-icon>
       <p>Parking not found.</p>
-      <a routerLink="/list">← Back to list</a>
+      <a mat-stroked-button routerLink="/list">← Back to list</a>
     </div>
   }
 
-  <!-- Prikazuje se samo ako parking postoji -->
   @if (parking) {
 
-    <!-- Gornji bar: back dugme i status badge -->
     <div class="top-bar">
-      <a routerLink="/list" class="back-btn">← Back</a>
-      <!-- Badge boja se mijenja dinamički: badge-available, badge-limited, badge-full -->
+      <a mat-icon-button routerLink="/list" class="back-btn">
+        <mat-icon>arrow_back</mat-icon>
+      </a>
       <span class="badge badge-{{ parking.status }}">
         {{ getStatusLabel(parking.status) }}
       </span>
+      <button
+        mat-icon-button
+        class="fav-btn"
+        [class.is-favourite]="isFavourite()"
+        (click)="toggleFavourite()"
+        [attr.aria-label]="isFavourite() ? 'Remove from favourites' : 'Add to favourites'">
+        <mat-icon>{{ isFavourite() ? 'favorite' : 'favorite_border' }}</mat-icon>
+      </button>
     </div>
 
-    <!-- Naziv i adresa parkinga -->
     <h1>{{ parking.name }}</h1>
-    <p class="address">{{ parking.address }}</p>
+    <p class="address">
+      <mat-icon>location_on</mat-icon>
+      {{ parking.address }}
+    </p>
 
-    <!-- Dvije stat kartice: slobodna mjesta i cijena -->
     <div class="stats">
       <div class="stat-card">
-        <div class="stat-label">Available spots</div>
-        <!-- Broj slobodnih mjesta -->
-        <div class="stat-value">{{ parking.availableSpots }}</div>
+        <div class="stat-label">Free spots</div>
+        <div class="stat-value" [class]="'status-' + parking.status">
+          {{ parking.availableSpots }}
+        </div>
         <div class="stat-sub">of {{ parking.totalCapacity }} total</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Price</div>
-        <!-- Cijena formatirana na 2 decimale pomoću pipe-a -->
         <div class="stat-value">{{ parking.pricePerHour | number:'1.2-2' }}</div>
         <div class="stat-sub">KM / hour</div>
       </div>
     </div>
 
-    <!-- Tabela sa dodatnim info: zona, radno vrijeme, adresa -->
     <div class="info-table">
       <div class="info-row">
-        <span class="info-label">Zone</span>
-        <span>{{ parking.zone }}</span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">Working hours</span>
+        <span class="info-label">
+          <mat-icon>schedule</mat-icon>
+          Working hours
+        </span>
         <span>{{ parking.workingHours }}</span>
       </div>
       <div class="info-row">
-        <span class="info-label">Address</span>
-        <span>{{ parking.address }}</span>
+        <span class="info-label">
+          <mat-icon>location_city</mat-icon>
+          Neighbourhood
+        </span>
+        <span>{{ parking.zone }}</span>
       </div>
     </div>
 
-    <!-- Placeholder za mapu – prikazuje koordinate dok nema Google Maps integracije -->
-    <div class="map-placeholder">
-      <p> {{ parking.latitude }}, {{ parking.longitude }}</p>
+    <div class="map-container">
+      <iframe
+        [src]="getMapUrl()"
+        width="100%"
+        height="200"
+        style="border:0; border-radius:10px;"
+        allowfullscreen
+        loading="lazy">
+      </iframe>
     </div>
 
-    <!-- Dugme koje otvara Google Maps u novom tabu sa lokacijom parkinga -->
 
-      <a [href]="parking.googleMapsUrl"
+    <a mat-flat-button
+      [href]="parking.googleMapsUrl"
       target="_blank"
-      class="directions-btn"
-      >
-      Get directions →
+      class="directions-btn">
+    <mat-icon>directions</mat-icon>
+    Get directions
     </a>
   }
 

@@ -1,25 +1,17 @@
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 24px;
-  background: #1a2a4a;
-  color: white;
+.main-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px;
 }
 
-.navbar a {
-  color: white;
-  text-decoration: none;
-  font-size: 14px;
-  margin-left: 16px;
+@media (max-width: 480px) {
+  .main-content {
+    padding: 8px;
+  }
 }
-
-.navbar a:first-child {
-  font-weight: 600;
-  font-size: 16px;
-  margin-left: 0;
-}
-
-.nav-links a:hover {
-  color: #4ecca3;
+.map-content {
+  height: calc(100vh - 64px);
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
 }

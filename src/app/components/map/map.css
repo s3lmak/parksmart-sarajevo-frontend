@@ -1,0 +1,38 @@
+.map-wrapper {
+  padding: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.map-wrapper h1 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+#map {
+  height: 500px;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+@media (max-width: 480px) {
+  .map-wrapper {
+    padding: 0;
+  }
+
+  #map {
+    height: calc(100vh - 120px);
+    border-radius: 0;
+  }
+}
+
+:host ::ng-deep .leaflet-container {
+  height: 100%;
+  width: 100%;
+}
+
+:host ::ng-deep .leaflet-tile-pane {
+  opacity: 1 !important;
+}

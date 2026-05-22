@@ -1,22 +1,17 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterModule } from '@angular/router';
-import { AuthService } from './services/auth';
+import { RouterOutlet, RouterModule, Router } from '@angular/router';
+import { HeaderComponent } from './components/header/header';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterModule],
+  imports: [RouterOutlet, RouterModule, HeaderComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  constructor(private authService: AuthService) {}
+  constructor(private router: Router) {}
 
-  isLoggedIn(): boolean {
-    return this.authService.isLoggedIn();
-  }
-
-  logout(): void {
-    this.authService.logout();
-    window.location.href = '/list';
+  isMapRoute(): boolean {
+    return this.router.url === '/map';
   }
 }
