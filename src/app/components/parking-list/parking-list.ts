@@ -5,6 +5,7 @@ import { DecimalPipe } from '@angular/common';
 import { Parking } from '../../models/parking';
 import { ParkingService } from '../../services/parking';
 import { FavouritesService } from '../../services/favourites';
+import { ReviewService } from '../../services/review';
 import { AuthService } from '../../services/auth';
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
@@ -36,6 +37,7 @@ export class ParkingListComponent implements OnInit {
   parkings: Parking[] = [];
   zones: string[] = [];
   favouriteIds: Set<string> = new Set();
+  ratings: Map<string, number | null> = new Map();
 
   selectedZone: string = '';
   selectedStatus: string = '';
@@ -44,6 +46,7 @@ export class ParkingListComponent implements OnInit {
   constructor(
     private parkingService: ParkingService,
     private favouritesService: FavouritesService,
+    private reviewService: ReviewService,
     private authService: AuthService,
     private router: Router
   ) {}
@@ -57,7 +60,25 @@ export class ParkingListComponent implements OnInit {
   loadParkings(): void {
     this.parkingService.getParkings().subscribe(data => {
       this.parkings = data;
+      this.loadRatings();
     });
+  }
+
+  loadRatings(): void {
+    this.parkings.forEach(parking => {
+      this.reviewService.getReviewsByParkingId(parking.id).subscribe(reviews => {
+        if (reviews.length === 0) {
+          this.ratings.set(parking.id, null);
+        } else {
+          const average = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+          this.ratings.set(parking.id, average);
+        }
+      });
+    });
+  }
+
+  getRating(parkingId: string): number | null | undefined {
+    return this.ratings.get(parkingId);
   }
 
   loadZones(): void {
@@ -79,6 +100,7 @@ export class ParkingListComponent implements OnInit {
       this.maxPrice
     ).subscribe(data => {
       this.parkings = data;
+      this.loadRatings();
     });
   }
 

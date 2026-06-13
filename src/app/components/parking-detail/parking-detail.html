@@ -33,6 +33,16 @@
       {{ parking.address }}
     </p>
 
+    <div class="rating-summary">
+      <span class="stars">
+        @for (filled of getStarArray(averageRating); track $index) {
+          <span class="star">{{ filled ? '⭐' : '☆' }}</span>
+        }
+      </span>
+      <span class="rating-value">{{ averageRating | number:'1.1-1' }}</span>
+      <span class="rating-count">({{ reviews.length }} {{ reviews.length === 1 ? 'review' : 'reviews' }})</span>
+    </div>
+
     <div class="stats">
       <div class="stat-card">
         <div class="stat-label">Free spots</div>
@@ -121,6 +131,63 @@
         </div>
       }
     }
+
+    <div class="reviews-section">
+      <h2>Reviews</h2>
+
+      @if (reviews.length === 0) {
+        <p class="no-reviews">No reviews yet</p>
+      }
+
+      <div class="review-list">
+        @for (review of reviews; track review.id) {
+          <div class="review-card">
+            <div class="review-stars">
+              @for (filled of getStarArray(review.rating); track $index) {
+                <span class="star">{{ filled ? '⭐' : '☆' }}</span>
+              }
+            </div>
+            <p class="review-comment">{{ review.comment }}</p>
+            <p class="review-date">{{ review.createdAt | date:'short' }}</p>
+          </div>
+        }
+      </div>
+
+      @if (isLoggedIn()) {
+        @if (hasReviewed) {
+          <p class="already-reviewed">You have already reviewed this parking</p>
+        } @else {
+          <div class="review-form">
+            <h3>Leave a review</h3>
+
+            @if (reviewError) {
+              <div class="error-banner">{{ reviewError }}</div>
+            }
+
+            <div class="star-selector">
+              @for (star of [1, 2, 3, 4, 5]; track star) {
+                <span
+                  class="star selectable"
+                  [class.selected]="star <= reviewRating"
+                  (click)="setReviewRating(star)">⭐</span>
+              }
+            </div>
+
+            <textarea
+              class="review-textarea"
+              [(ngModel)]="reviewComment"
+              name="reviewComment"
+              placeholder="Write a comment..."
+              rows="3"></textarea>
+
+            <button
+              class="submit-review-btn"
+              [disabled]="reviewRating === 0"
+              (click)="submitReview()">Submit Review</button>
+          </div>
+        }
+      }
+    </div>
   }
 
 </div>
