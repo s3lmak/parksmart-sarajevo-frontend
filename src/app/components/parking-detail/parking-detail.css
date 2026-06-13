@@ -171,3 +171,120 @@ h1 {
 .fav-btn.is-favourite mat-icon {
   color: #e53935;
 }
+
+.reserve-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin-top: 12px;
+  background: #1a73e8;
+  color: white;
+  border: none;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.reserve-btn:hover {
+  background: #1557b0;
+}
+
+.reservation-form {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background: #f5f5f5;
+}
+
+.reservation-form h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #444;
+}
+
+.form-group input {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: #1a73e8;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.form-actions button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+.confirm-btn {
+  background: #1a73e8;
+  color: white;
+}
+
+.confirm-btn:hover:not(:disabled) {
+  background: #1557b0;
+}
+
+.confirm-btn:disabled {
+  background: #b0c9f5;
+  cursor: not-allowed;
+}
+
+.cancel-btn {
+  background: white;
+  color: #444;
+  border: 1px solid #ddd;
+}
+
+.cancel-btn:hover {
+  background: #f0f0f0;
+}
+
+.success-banner {
+  padding: 10px 14px;
+  background: #e6f4ea;
+  color: #1e7e34;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-top: 16px;
+}
+
+.error-banner {
+  padding: 10px 14px;
+  background: #fce8e6;
+  color: #c62828;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-top: 16px;
+}

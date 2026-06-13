@@ -1,0 +1,35 @@
+<div class="reservations-container">
+
+  <div class="header">
+    <h1>My Reservations</h1>
+    <p class="subtitle">{{ reservations.length }} total</p>
+  </div>
+
+  @if (reservations.length === 0) {
+    <div class="empty-state">
+      <p>No reservations yet</p>
+      <a routerLink="/list">Browse parking lots</a>
+    </div>
+  }
+
+  <div class="reservation-cards">
+    @for (reservation of reservations; track reservation.id) {
+      <div class="reservation-card">
+        <div class="card-left">
+          <h2>Parking #{{ reservation.parkingId }}</h2>
+          <p class="time">From: {{ reservation.startTime | date:'short' }}</p>
+          <p class="time">To: {{ reservation.endTime | date:'short' }}</p>
+        </div>
+        <div class="card-right">
+          <span class="badge badge-{{ reservation.status }}">
+            {{ getStatusLabel(reservation.status) }}
+          </span>
+          @if (reservation.status === 'active') {
+            <button class="cancel-btn" (click)="cancel(reservation)">Cancel</button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+</div>
