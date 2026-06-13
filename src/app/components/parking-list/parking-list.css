@@ -94,6 +94,19 @@
   margin: 0;
 }
 
+.rating-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #444;
+  margin-top: 2px;
+}
+
+.rating-badge.no-reviews {
+  color: #999;
+  font-weight: 400;
+}
+
 .card-status {
   display: flex;
   flex-direction: column;

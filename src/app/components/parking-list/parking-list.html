@@ -53,6 +53,11 @@
                   {{ parking.address }}
                 </p>
                 <p class="price">{{ parking.pricePerHour | number:'1.2-2' }} KM/h</p>
+                @if (getRating(parking.id)) {
+                  <span class="rating-badge">⭐ {{ getRating(parking.id) | number:'1.1-1' }}</span>
+                } @else if (getRating(parking.id) === null) {
+                  <span class="rating-badge no-reviews">No reviews yet</span>
+                }
               </div>
               <div class="card-status">
                 <span class="badge badge-{{ parking.status }}">

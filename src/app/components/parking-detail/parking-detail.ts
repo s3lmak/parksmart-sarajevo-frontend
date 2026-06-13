@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Parking } from '../../models/parking';
+import { Review } from '../../models/review';
 import { ParkingService } from '../../services/parking';
 import { FavouritesService } from '../../services/favourites';
 import { ReservationService } from '../../services/reservation';
+import { ReviewService } from '../../services/review';
 import { AuthService } from '../../services/auth';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,7 +15,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-parking-detail',
-  imports: [RouterModule, DecimalPipe, FormsModule, MatIconModule, MatButtonModule],
+  imports: [RouterModule, DecimalPipe, DatePipe, FormsModule, MatIconModule, MatButtonModule],
   templateUrl: './parking-detail.html',
   styleUrl: './parking-detail.css'
 })
@@ -28,11 +30,19 @@ export class ParkingDetailComponent implements OnInit {
   reservationSuccess = '';
   reservationError = '';
 
+  reviews: Review[] = [];
+  averageRating = 0;
+  hasReviewed = false;
+  reviewRating = 0;
+  reviewComment = '';
+  reviewError = '';
+
   constructor(
     private route: ActivatedRoute,
     private parkingService: ParkingService,
     private favouritesService: FavouritesService,
     private reservationService: ReservationService,
+    private reviewService: ReviewService,
     private authService: AuthService,
     private router: Router,
     private sanitizer: DomSanitizer
@@ -45,6 +55,9 @@ export class ParkingDetailComponent implements OnInit {
         this.parking = data;
         this.checkFavourite();
       });
+      this.loadReviews(id);
+      this.loadAverageRating(id);
+      this.checkUserReview(id);
     }
   }
 
@@ -125,6 +138,55 @@ export class ParkingDetailComponent implements OnInit {
       },
       error: () => {
         this.reservationError = 'Failed to create reservation. Please try again.';
+      }
+    });
+  }
+
+  loadReviews(parkingId: string): void {
+    this.reviewService.getReviewsByParkingId(parkingId).subscribe(data => {
+      this.reviews = data;
+    });
+  }
+
+  loadAverageRating(parkingId: string): void {
+    this.reviewService.getAverageRating(parkingId).subscribe(data => {
+      this.averageRating = data;
+    });
+  }
+
+  checkUserReview(parkingId: string): void {
+    const user = this.authService.getCurrentUser();
+    if (!user) return;
+    this.reviewService.hasUserReviewed(user.id, parkingId).subscribe(result => {
+      this.hasReviewed = result;
+    });
+  }
+
+  getStarArray(rating: number): boolean[] {
+    const rounded = Math.round(rating);
+    return [1, 2, 3, 4, 5].map(star => star <= rounded);
+  }
+
+  setReviewRating(rating: number): void {
+    this.reviewRating = rating;
+  }
+
+  submitReview(): void {
+    const user = this.authService.getCurrentUser();
+    if (!user || !this.parking || this.reviewRating === 0) return;
+
+    this.reviewError = '';
+
+    this.reviewService.addReview(user.id, this.parking.id, this.reviewRating, this.reviewComment).subscribe({
+      next: () => {
+        this.hasReviewed = true;
+        this.reviewRating = 0;
+        this.reviewComment = '';
+        this.loadReviews(this.parking!.id);
+        this.loadAverageRating(this.parking!.id);
+      },
+      error: () => {
+        this.reviewError = 'Failed to submit review. Please try again.';
       }
     });
   }
