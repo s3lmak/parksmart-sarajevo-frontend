@@ -1,0 +1,114 @@
+.reservations-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 0;
+  color: #666;
+}
+
+.empty-state a {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 8px 20px;
+  background: #1a73e8;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.empty-state a:hover {
+  background: #1557b0;
+}
+
+.reservation-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.reservation-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background: white;
+}
+
+.card-left h2 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+.card-left .time {
+  font-size: 13px;
+  color: #666;
+  margin: 0 0 2px;
+}
+
+.card-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge-active {
+  background: #e6f4ea;
+  color: #1e7e34;
+}
+
+.badge-cancelled {
+  background: #fce8e6;
+  color: #c62828;
+}
+
+.badge-completed {
+  background: #e8eaed;
+  color: #5f6368;
+}
+
+.cancel-btn {
+  padding: 6px 14px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #c62828;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background: #fce8e6;
+  border-color: #c62828;
+}

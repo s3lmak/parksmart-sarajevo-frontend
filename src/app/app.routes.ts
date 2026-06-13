@@ -44,6 +44,14 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'my-reservations',
+    loadComponent: () =>
+      import('./components/my-reservations/my-reservations').then(
+        m => m.MyReservationsComponent
+      ),
+    canActivate: [authGuard]
+  },
+  {
     path: '',
     redirectTo: 'list',
     pathMatch: 'full'
