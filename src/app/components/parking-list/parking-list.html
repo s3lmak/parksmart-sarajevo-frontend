@@ -6,6 +6,12 @@
   </div>
 
   <div class="filters">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search parking</mat-label>
+      <input matInput [(ngModel)]="searchQuery" (ngModelChange)="applyFilters()" placeholder="e.g. Skenderija">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
     <mat-form-field appearance="outline" class="zone-filter">
       <mat-label>Neighbourhood</mat-label>
       <mat-select [(ngModel)]="selectedZone" (ngModelChange)="applyFilters()">
@@ -28,6 +34,10 @@
     <button mat-stroked-button (click)="resetFilters()">
       <mat-icon>clear</mat-icon>
       Reset
+    </button>
+    <button mat-stroked-button (click)="sortByDistance()">
+      <mat-icon>near_me</mat-icon>
+      Near me
     </button>
 
   </div>

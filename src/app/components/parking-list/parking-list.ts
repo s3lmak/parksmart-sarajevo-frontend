@@ -13,6 +13,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-parking-list',
@@ -27,7 +28,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatCardModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatButtonModule
+    MatButtonModule,
+    MatInputModule
   ],
   templateUrl: './parking-list.html',
   styleUrl: './parking-list.css'
@@ -42,6 +44,8 @@ export class ParkingListComponent implements OnInit {
   selectedZone: string = '';
   selectedStatus: string = '';
   maxPrice: number | undefined = undefined;
+  allParkings: Parking[] = [];
+  searchQuery: string = '';
 
   constructor(
     private parkingService: ParkingService,
@@ -59,6 +63,7 @@ export class ParkingListComponent implements OnInit {
 
   loadParkings(): void {
     this.parkingService.getParkings().subscribe(data => {
+      this.allParkings = data;
       this.parkings = data;
       this.loadRatings();
     });
@@ -82,7 +87,9 @@ export class ParkingListComponent implements OnInit {
   }
 
   loadZones(): void {
-    this.zones = ['Zone 1', 'Zone 2', 'Zone 3'];
+    this.parkingService.getParkings().subscribe(parkings => {
+      this.zones = [...new Set(parkings.map(p => p.zone))].sort();
+    });
   }
 
   loadFavouriteIds(): void {
@@ -94,13 +101,14 @@ export class ParkingListComponent implements OnInit {
   }
 
   applyFilters(): void {
-    this.parkingService.getFilteredParkings(
-      this.selectedZone || undefined,
-      this.selectedStatus || undefined,
-      this.maxPrice
-    ).subscribe(data => {
-      this.parkings = data;
-      this.loadRatings();
+    this.parkings = this.allParkings.filter(p => {
+      const matchesZone = !this.selectedZone || p.zone === this.selectedZone;
+      const matchesStatus = !this.selectedStatus || p.status === this.selectedStatus;
+      const matchesSearch = !this.searchQuery ||
+        p.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        p.address.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        p.zone.toLowerCase().includes(this.searchQuery.toLowerCase());
+      return matchesZone && matchesStatus && matchesSearch;
     });
   }
 
@@ -108,6 +116,7 @@ export class ParkingListComponent implements OnInit {
     this.selectedZone = '';
     this.selectedStatus = '';
     this.maxPrice = undefined;
+    this.searchQuery = '';
     this.loadParkings();
   }
 
@@ -151,4 +160,35 @@ export class ParkingListComponent implements OnInit {
     this.selectedStatus = this.selectedStatus === status ? '' : status;
     this.applyFilters();
   }
+
+  sortByDistance(): void {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser.');
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+        this.parkings = [...this.parkings].sort((a, b) => {
+          const distA = this.calculateDistance(userLat, userLng, a.latitude, a.longitude);
+          const distB = this.calculateDistance(userLat, userLng, b.latitude, b.longitude);
+          return distA - distB;
+        });
+      },
+      () => alert('Unable to get your location.')
+    );
+  }
+
+  calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLng/2) * Math.sin(dLng/2);
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  }
+
+
 }

@@ -28,6 +28,14 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.map.on('load', () => {
       this.loadParkings();
     });
+
+    this.map.addControl(new mapboxgl.GeolocateControl({
+      positionOptions: {
+        enableHighAccuracy: true
+      },
+      trackUserLocation: true,
+      showUserHeading: true
+    }));
   }
 
   ngOnDestroy(): void {
