@@ -95,42 +95,6 @@
     Get directions
     </a>
 
-    <!-- Reservation section: dugme za rezervaciju, prikazano samo ulogovanim korisnicima -->
-    @if (isLoggedIn()) {
-
-      @if (reservationSuccess) {
-        <div class="success-banner">{{ reservationSuccess }}</div>
-      }
-
-      @if (reservationError) {
-        <div class="error-banner">{{ reservationError }}</div>
-      }
-
-      @if (!showReservationForm) {
-        <button class="reserve-btn" (click)="openReservationForm()">Reserve</button>
-      }
-
-      @if (showReservationForm) {
-        <div class="reservation-form">
-          <h2>Reserve this parking</h2>
-
-          <div class="form-group">
-            <label>Start time</label>
-            <input type="datetime-local" [(ngModel)]="startTime" name="startTime" />
-          </div>
-
-          <div class="form-group">
-            <label>End time</label>
-            <input type="datetime-local" [(ngModel)]="endTime" name="endTime" />
-          </div>
-
-          <div class="form-actions">
-            <button class="cancel-btn" (click)="cancelReservationForm()">Cancel</button>
-            <button class="confirm-btn" [disabled]="!startTime || !endTime" (click)="confirmReservation()">Confirm</button>
-          </div>
-        </div>
-      }
-    }
 
     <div class="reviews-section">
       <h2>Reviews</h2>
