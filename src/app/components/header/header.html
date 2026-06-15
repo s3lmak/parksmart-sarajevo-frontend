@@ -17,6 +17,12 @@
     </a>
 
     @if (isLoggedIn()) {
+      @if (getCurrentUser()?.role === 'ADMIN') {
+        <a routerLink="/admin" routerLinkActive="active-link" class="nav-item">
+          <mat-icon>admin_panel_settings</mat-icon>
+          <span class="nav-label">Admin</span>
+        </a>
+      }
       <a routerLink="/favourites" routerLinkActive="active-link" class="nav-item">
         <mat-icon>favorite</mat-icon>
         <span class="nav-label">Favourites</span>

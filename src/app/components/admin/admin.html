@@ -1,0 +1,138 @@
+<div class="admin-container">
+  <h1>Admin Panel</h1>
+  <div class="admin-header">
+    <h1>Admin Panel</h1>
+    <button mat-flat-button color="primary" (click)="showAddForm = !showAddForm">
+      <mat-icon>add</mat-icon>
+      Add Parking
+    </button>
+  </div>
+
+  @if (showAddForm) {
+    <mat-card class="add-form-card">
+      <mat-card-header>
+        <mat-card-title>Add New Parking</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="form-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput [(ngModel)]="newParking.name">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Address</mat-label>
+            <input matInput [(ngModel)]="newParking.address">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Zone</mat-label>
+            <input matInput [(ngModel)]="newParking.zone">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Total Capacity</mat-label>
+            <input matInput type="number" [(ngModel)]="newParking.totalCapacity">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Price per Hour (KM)</mat-label>
+            <input matInput type="number" [(ngModel)]="newParking.pricePerHour">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Working Hours</mat-label>
+            <input matInput [(ngModel)]="newParking.workingHours" placeholder="00:00 – 24:00">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Latitude</mat-label>
+            <input matInput type="number" [(ngModel)]="newParking.latitude">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Longitude</mat-label>
+            <input matInput type="number" [(ngModel)]="newParking.longitude">
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions">
+          <button mat-stroked-button (click)="showAddForm = false">Cancel</button>
+          <button mat-flat-button color="primary" (click)="addParking()">Save</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <div class="parking-cards">
+    @for (parking of parkings; track parking.id) {
+      <mat-card class="parking-card">
+        <mat-card-content>
+          @if (editingParking?.id === parking.id) {
+            <div class="form-grid">
+              <mat-form-field appearance="outline">
+                <mat-label>Name</mat-label>
+                <input matInput [(ngModel)]="editingParking!.name">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Address</mat-label>
+                <input matInput [(ngModel)]="editingParking!.address">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Zone</mat-label>
+                <input matInput [(ngModel)]="editingParking!.zone">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Capacity</mat-label>
+                <input matInput type="number" [(ngModel)]="editingParking!.totalCapacity">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Price/h (KM)</mat-label>
+                <input matInput type="number" [(ngModel)]="editingParking!.pricePerHour">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Working Hours</mat-label>
+                <input matInput [(ngModel)]="editingParking!.workingHours">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Latitude</mat-label>
+                <input matInput type="number" [(ngModel)]="editingParking!.latitude">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Longitude</mat-label>
+                <input matInput type="number" [(ngModel)]="editingParking!.longitude">
+              </mat-form-field>
+            </div>
+            <div class="form-actions">
+              <button mat-stroked-button (click)="cancelEdit()">Cancel</button>
+              <button mat-flat-button color="primary" (click)="saveEdit()">Save</button>
+            </div>
+          } @else {
+            <div class="card-main">
+              <div class="card-info">
+                <h2>{{ parking.name }}</h2>
+                <p class="zone">{{ parking.zone }}</p>
+                <p class="details">Capacity: {{ parking.totalCapacity }} · {{ parking.pricePerHour }} KM/h</p>
+              </div>
+              <div class="card-actions">
+                <button mat-icon-button color="primary" (click)="startEdit(parking)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="deleteParking(parking.id)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+</div>

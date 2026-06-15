@@ -22,10 +22,16 @@ export class ParkingService {
     return this.http.get<Parking>(`${this.apiUrl}/${id}`);
   }
 
-  getFilteredParkings(zone?: string, status?: string, maxPrice?: number): Observable<Parking[]> {
-    if (zone) return this.http.get<Parking[]>(`${this.searchUrl}/zone/${zone}`);
-    if (status) return this.http.get<Parking[]>(`${this.searchUrl}/status/${status}`);
-    if (maxPrice) return this.http.get<Parking[]>(`${this.searchUrl}/price?maxPrice=${maxPrice}`);
-    return this.http.get<Parking[]>(this.apiUrl);
+  deleteParking(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  createParking(parking: Partial<Parking>): Observable<Parking> {
+    return this.http.post<Parking>(this.apiUrl, parking);
+  }
+
+  updateParking(id: string, parking: Partial<Parking>): Observable<Parking> {
+    return this.http.put<Parking>(`${this.apiUrl}/${id}`, parking);
+  }
+
 }

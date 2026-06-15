@@ -16,6 +16,7 @@ mat-toolbar {
   font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.5px;
+  flex-shrink: 0;
 }
 
 .spacer {
@@ -25,7 +26,7 @@ mat-toolbar {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .nav-item {
@@ -39,10 +40,10 @@ mat-toolbar {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px 12px;
+  padding: 8px 10px;
   border-radius: 8px;
   transition: background 0.2s;
-  min-width: 56px;
+  min-width: 48px;
 }
 
 .nav-item:hover {
@@ -50,7 +51,7 @@ mat-toolbar {
 }
 
 .nav-label {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
   line-height: 1;
 }
@@ -63,17 +64,21 @@ mat-toolbar {
   color: #1976d2;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   mat-toolbar {
-    padding: 0 8px;
-  }
-
-  .nav-item {
-    padding: 6px 8px;
-    min-width: 44px;
+    padding: 0 4px;
   }
 
   .logo span {
-    font-size: 15px;
+    display: none;
+  }
+
+  .nav-item {
+    padding: 6px 6px;
+    min-width: 36px;
+  }
+
+  .nav-label {
+    display: none;
   }
 }

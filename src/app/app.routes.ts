@@ -55,5 +55,10 @@ export const routes: Routes = [
     path: '',
     redirectTo: 'list',
     pathMatch: 'full'
+  },
+  {
+    path: 'admin',
+    loadComponent: () =>
+      import('./components/admin/admin').then(m => m.AdminComponent)
   }
 ];

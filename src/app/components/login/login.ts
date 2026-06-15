@@ -30,7 +30,12 @@ export class LoginComponent {
     const { email, password } = this.loginForm.value as { email: string; password: string };
     this.authService.login(email, password).subscribe(result => {
       if (result.success) {
-        this.router.navigate(['/list']);
+        const user = this.authService.getCurrentUser();
+        if (user?.role === 'ADMIN') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/list']);
+        }
       } else {
         this.errorMessage = 'Invalid credentials.';
       }

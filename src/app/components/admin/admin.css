@@ -1,0 +1,92 @@
+.admin-container {
+  padding: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.admin-container h1 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.parking-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.parking-card {
+  border-radius: 12px !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08) !important;
+}
+
+.parking-card mat-card-content {
+  padding: 10px 14px !important;
+}
+
+.card-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-info h2 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 2px;
+}
+
+.zone {
+  font-size: 12px;
+  color: #666;
+  margin: 0 0 2px;
+}
+
+.details {
+  font-size: 12px;
+  color: #888;
+  margin: 0;
+}
+
+.card-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.admin-header h1 {
+  margin: 0;
+}
+
+.add-form-card {
+  border-radius: 12px !important;
+  margin-bottom: 16px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+@media (max-width: 480px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

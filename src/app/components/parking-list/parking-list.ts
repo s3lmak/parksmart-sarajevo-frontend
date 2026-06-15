@@ -14,6 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
+import { interval } from 'rxjs';
+import { switchMap, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-parking-list',
@@ -56,9 +58,19 @@ export class ParkingListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadParkings();
     this.loadZones();
     this.loadFavouriteIds();
+
+    interval(30000)
+      .pipe(
+        startWith(0),
+        switchMap(() => this.parkingService.getParkings())
+      )
+      .subscribe(data => {
+        this.allParkings = data;
+        this.applyFilters();
+        this.loadRatings();
+      });
   }
 
   loadParkings(): void {

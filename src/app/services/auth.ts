@@ -9,6 +9,7 @@ interface BackendUser {
   fullName: string;
   email: string;
   password: string;
+  role: string;
 }
 
 interface AuthResult {
@@ -41,7 +42,12 @@ export class AuthService {
       map(users => {
         const found = users.find(u => u.email === email && u.password === password);
         if (!found) return { success: false };
-        const user: User = { id: String(found.id), fullName: found.fullName, email: found.email };
+        const user: User = {
+          id: String(found.id),
+          fullName: found.fullName,
+          email: found.email,
+          role: found.role
+        };
         localStorage.setItem(this.storageKey, JSON.stringify(user));
         return { success: true };
       }),
