@@ -38,20 +38,18 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<AuthResult> {
-    return this.http.get<BackendUser[]>(this.apiUrl).pipe(
-      map(users => {
-        const found = users.find(u => u.email === email && u.password === password);
-        if (!found) return { success: false };
-        const user: User = {
-          id: String(found.id),
-          fullName: found.fullName,
-          email: found.email,
-          role: found.role
+    return this.http.post<BackendUser>(`${this.apiUrl}/login`, { email, password }).pipe(
+      map(user => {
+        const mappedUser: User = {
+          id: String(user.id),
+          fullName: user.fullName,
+          email: user.email,
+          role: user.role
         };
-        localStorage.setItem(this.storageKey, JSON.stringify(user));
+        localStorage.setItem(this.storageKey, JSON.stringify(mappedUser));
         return { success: true };
       }),
-      catchError(() => of({ success: false, error: 'Login failed. Please try again.' }))
+      catchError(() => of({ success: false, error: 'Invalid credentials.' }))
     );
   }
 
