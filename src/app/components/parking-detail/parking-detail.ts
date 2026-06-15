@@ -6,7 +6,6 @@ import { Parking } from '../../models/parking';
 import { Review } from '../../models/review';
 import { ParkingService } from '../../services/parking';
 import { FavouritesService } from '../../services/favourites';
-import { ReservationService } from '../../services/reservation';
 import { ReviewService } from '../../services/review';
 import { AuthService } from '../../services/auth';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,12 +23,6 @@ export class ParkingDetailComponent implements OnInit {
   parking: Parking | undefined;
   private isFav: boolean = false;
 
-  showReservationForm = false;
-  startTime = '';
-  endTime = '';
-  reservationSuccess = '';
-  reservationError = '';
-
   reviews: Review[] = [];
   averageRating = 0;
   hasReviewed = false;
@@ -41,7 +34,6 @@ export class ParkingDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private parkingService: ParkingService,
     private favouritesService: FavouritesService,
-    private reservationService: ReservationService,
     private reviewService: ReviewService,
     private authService: AuthService,
     private router: Router,
@@ -107,39 +99,6 @@ export class ParkingDetailComponent implements OnInit {
 
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
-  }
-
-  openReservationForm(): void {
-    this.showReservationForm = true;
-    this.reservationSuccess = '';
-    this.reservationError = '';
-  }
-
-  cancelReservationForm(): void {
-    this.showReservationForm = false;
-    this.startTime = '';
-    this.endTime = '';
-    this.reservationError = '';
-  }
-
-  confirmReservation(): void {
-    const user = this.authService.getCurrentUser();
-    if (!user || !this.parking) return;
-
-    this.reservationError = '';
-    this.reservationSuccess = '';
-
-    this.reservationService.createReservation(user.id, this.parking.id, this.startTime, this.endTime).subscribe({
-      next: () => {
-        this.reservationSuccess = 'Reservation confirmed!';
-        this.showReservationForm = false;
-        this.startTime = '';
-        this.endTime = '';
-      },
-      error: () => {
-        this.reservationError = 'Failed to create reservation. Please try again.';
-      }
-    });
   }
 
   loadReviews(parkingId: string): void {
