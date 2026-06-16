@@ -1,0 +1,135 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 48px 16px;
+  box-sizing: border-box;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  border-radius: 12px;
+  padding: 40px 36px 32px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+}
+
+.auth-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.auth-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #111;
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  color: #202124;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.full-width {
+  width: 100%;
+  --mdc-outlined-text-field-focus-outline-color: #111;
+  --mdc-outlined-text-field-focus-label-text-color: #111;
+  --mat-form-field-focus-select-arrow-color: #111;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.error-banner {
+  padding: 10px 14px;
+  background: #fce8e6;
+  color: #c62828;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.submit-btn {
+  width: 100%;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 24px !important;
+  height: 48px;
+  margin-top: 4px;
+  --mdc-filled-button-container-color: #111;
+  --mdc-filled-button-label-text-color: white;
+  --mdc-filled-button-disabled-container-color: rgba(0, 0, 0, 0.12);
+  --mdc-filled-button-disabled-label-text-color: rgba(0, 0, 0, 0.38);
+}
+
+.submit-btn:hover:not(:disabled) {
+  --mdc-filled-button-container-color: #333;
+}
+
+.switch-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+.toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: #111;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: 500;
+  padding: 0 2px;
+  min-height: 44px;
+}
+
+.toggle-btn:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .auth-container {
+    padding: 24px 12px;
+  }
+
+  .auth-card {
+    padding: 28px 20px 24px;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 360px) {
+  .auth-container {
+    padding: 16px 8px;
+  }
+
+  .auth-card {
+    padding: 24px 16px 20px;
+  }
+}
