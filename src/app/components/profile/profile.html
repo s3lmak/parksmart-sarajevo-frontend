@@ -1,0 +1,35 @@
+<div class="profile-container">
+  <h1>My Profile</h1>
+
+  @if (successMessage) {
+    <div class="success-banner">{{ successMessage }}</div>
+  }
+
+  @if (errorMessage) {
+    <div class="error-banner">{{ errorMessage }}</div>
+  }
+
+  <mat-card>
+    <mat-card-content>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Full Name</mat-label>
+        <input matInput [(ngModel)]="fullName">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Current Password</mat-label>
+        <input matInput type="password" [(ngModel)]="currentPassword">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>New Password (leave empty to keep current)</mat-label>
+        <input matInput type="password" [(ngModel)]="newPassword">
+      </mat-form-field>
+
+      <button mat-flat-button color="primary" (click)="save()">
+        <mat-icon>save</mat-icon>
+        Save Changes
+      </button>
+    </mat-card-content>
+  </mat-card>
+</div>
