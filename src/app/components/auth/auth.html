@@ -1,0 +1,103 @@
+<div class="auth-container">
+  <div class="auth-card">
+
+    <div class="auth-header">
+      <mat-icon class="auth-icon">account_circle</mat-icon>
+      <h1>{{ isRegisterMode ? 'Create account' : 'Sign in' }}</h1>
+      <p class="subtitle">{{ isRegisterMode ? 'Join ParkSmart Sarajevo' : 'Welcome back to ParkSmart' }}</p>
+    </div>
+
+    @if (!isRegisterMode) {
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input matInput type="email" formControlName="email" placeholder="test@test.com" />
+          @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+            <mat-error>Enter a valid email address.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input matInput type="password" formControlName="password" placeholder="••••••••" />
+          @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+            <mat-error>Password must be at least 8 characters.</mat-error>
+          }
+        </mat-form-field>
+
+        @if (errorMessage) {
+          <div class="error-banner">{{ errorMessage }}</div>
+        }
+
+        <button mat-flat-button type="submit" class="submit-btn" [disabled]="loginForm.invalid">
+          Sign in
+        </button>
+
+      </form>
+    }
+
+    @if (isRegisterMode) {
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Full name</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <input matInput type="text" formControlName="fullName" placeholder="Ana Kovač" />
+          @if (registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched) {
+            <mat-error>Full name is required.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input matInput type="email" formControlName="email" placeholder="ana@example.com" />
+          @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+            <mat-error>Enter a valid email address.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input matInput type="password" formControlName="password" placeholder="Min. 8 characters" />
+          @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+            <mat-error>Password must be at least 8 characters.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Confirm password</mat-label>
+          <mat-icon matPrefix>lock_reset</mat-icon>
+          <input matInput type="password" formControlName="confirmPassword" placeholder="Repeat your password" />
+          @if (registerForm.get('confirmPassword')?.touched && registerForm.hasError('passwordsMismatch')) {
+            <mat-error>Passwords do not match.</mat-error>
+          }
+        </mat-form-field>
+
+        @if (errorMessage) {
+          <div class="error-banner">{{ errorMessage }}</div>
+        }
+
+        <button mat-flat-button type="submit" class="submit-btn" [disabled]="registerForm.invalid">
+          Create account
+        </button>
+
+      </form>
+    }
+
+    <p class="switch-link">
+      @if (isRegisterMode) {
+        Already have an account?
+        <button type="button" class="toggle-btn" (click)="toggleMode()">Sign in</button>
+      } @else {
+        Don't have an account?
+        <button type="button" class="toggle-btn" (click)="toggleMode()">Register</button>
+      }
+    </p>
+
+  </div>
+</div>
